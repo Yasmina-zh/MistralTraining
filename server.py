@@ -3,9 +3,6 @@ import psycopg2
 import psycopg2.extras
 from fastmcp import FastMCP
 
-# Read database URL from environment variable (set in Horizon settings)
-DATABASE_URL = os.environ["DATABASE_URL"]
-
 mcp = FastMCP(
     "Neon PostgreSQL Explorer",
     instructions=(
@@ -17,7 +14,10 @@ mcp = FastMCP(
 
 def get_connection():
     """Create a new database connection."""
-    return psycopg2.connect(DATABASE_URL)
+    url = os.environ.get("DATABASE_URL")
+    if not url:
+        raise RuntimeError("DATABASE_URL environment variable is not set.")
+    return psycopg2.connect(url)
 
 
 @mcp.tool
