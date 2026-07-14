@@ -14,7 +14,7 @@ mcp = FastMCP(
 
 def get_connection():
     """Create a new database connection."""
-    url = os.environ.get("DATABASE_URL")
+    url = os.environ.get("DATABASE_URL") or os.environ.get("NEONDATABASE_URL")
     if not url:
         raise RuntimeError("DATABASE_URL environment variable is not set.")
     return psycopg2.connect(url)
